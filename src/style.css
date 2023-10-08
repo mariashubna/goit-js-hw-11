@@ -1,0 +1,35 @@
+.search-form {
+    margin-bottom: 30px;
+}
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; 
+    width: 100%;
+
+}
+.gallery-container {
+    margin-bottom: 20px;
+    width: calc(30% - 10px);
+}
+.gallery-container ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin-right: auto;
+    margin-left: auto;
+}
+.gallery-container img {
+    width: 100%;
+   height: 295px;
+}
+.load-more {
+    display: none;
+  }
+
+  .gallery-container li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
