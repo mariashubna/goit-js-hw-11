@@ -25,13 +25,15 @@ let totalResults = 0;
 refs.form.addEventListener('submit', searchFunction);
 refs.loadMore.addEventListener('click', loadMoreImages);
 
-async function searchFunction(e) {
-  e.preventDefault();
+async function searchFunction(e, isLoadMore = false) {
+  if (e) {
+    e.preventDefault();
+  }
+
   const searchQuery = refs.input.value;
 
-  
-
-  if (currentPage === 1) {
+  if (!isLoadMore) {
+    currentPage = 1;
     refs.gallery.innerHTML = '';
   }
 
@@ -44,7 +46,6 @@ async function searchFunction(e) {
     page: currentPage,
     per_page: 40,
   };
-
 
   try {
     const response = await axios.get('https://pixabay.com/api/', { params });
@@ -90,7 +91,9 @@ async function searchFunction(e) {
         })
         .join('');
 
+      if (!isLoadMore) {
         Notiflix.Notify.success(`Hooray! We found ${totalResults} images.`);
+      }
 
       refs.gallery.insertAdjacentHTML("beforeend", imageCards);
 
@@ -98,10 +101,12 @@ async function searchFunction(e) {
         refs.loadMore.style.display = 'block';
       } else {
         refs.loadMore.style.display = 'none';
-        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+        if (!isLoadMore) {
+          Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+        }
       }
 
-       lightbox.refresh();
+      lightbox.refresh();
     }
   } catch (error) {
     console.error('Error fetching images:', error);
@@ -109,6 +114,7 @@ async function searchFunction(e) {
 }
 
 async function loadMoreImages() {
-  currentPage += 1;
-  searchFunction(new Event('submit'));
+  currentPage++; 
+  
+  await searchFunction(null, true);
 }
