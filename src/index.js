@@ -19,7 +19,6 @@ const lightbox = new SimpleLightbox('.gallery-container a', {
 
 
 
-
 let currentPage = 1;
 let totalResults = 0;
 
@@ -29,6 +28,8 @@ refs.loadMore.addEventListener('click', loadMoreImages);
 async function searchFunction(e) {
   e.preventDefault();
   const searchQuery = refs.input.value;
+
+  
 
   if (currentPage === 1) {
     refs.gallery.innerHTML = '';
@@ -43,6 +44,7 @@ async function searchFunction(e) {
     page: currentPage,
     per_page: 40,
   };
+
 
   try {
     const response = await axios.get('https://pixabay.com/api/', { params });
@@ -90,7 +92,7 @@ async function searchFunction(e) {
 
         Notiflix.Notify.success(`Hooray! We found ${totalResults} images.`);
 
-      refs.gallery.innerHTML += imageCards;
+      refs.gallery.insertAdjacentHTML("beforeend", imageCards);
 
       if (totalResults > currentPage * 40) {
         refs.loadMore.style.display = 'block';
